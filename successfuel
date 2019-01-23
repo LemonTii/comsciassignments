@@ -1,0 +1,398 @@
+import tkinter as tk
+from tkinter import *
+from tkinter.simpledialog import *
+from tkinter import messagebox
+from tkinter.messagebox import *
+from tkinter.filedialog import *
+import datetime
+import pickle
+
+class Error(Exception):
+    pass
+
+class RangeError(Error):
+    pass
+
+#showing date and time
+def date_time():
+    dandt = Tk()
+    dandt.configure(background = "#a7daff")
+    now = datetime.datetime.now()
+    display = now.strftime("%Y-%m-%d \n %H:%M:%S")
+    showdt = Label(dandt, text = display, bg = "#a7daff", font = 30)
+    showdt.pack()
+
+#clearing paint screen
+def clear():
+    drawing.delete("all")
+
+#create paint screen
+def sdraw():
+    global drawing
+    canvas_width = 500
+    canvas_height = 150
+    draw = Tk()
+    draw.title( "Paint" )
+    drawing = Canvas(draw, 
+               width=canvas_width, 
+               height=canvas_height)
+    drawing.pack(expand = YES, fill = BOTH)
+    drawing.bind( "<B1-Motion>", paint )
+
+    message = Label( draw, text = "Press and Drag the mouse to draw" )
+    message.pack( side = BOTTOM )
+
+    cls = Button(draw, text = "clear", bg = "#ffd89f",
+                 command = clear)
+    cls.pack()
+
+#draw on paint screen
+def paint( event ):
+   python_black = "#000000"
+   x1, y1 = ( event.x - 1 ), ( event.y - 1 )
+   x2, y2 = ( event.x + 1 ), ( event.y + 1 )
+   drawing.create_oval( x1, y1, x2, y2, fill = python_black )
+
+def input_marks():
+    #openning input marks window
+    close = 1
+    while close == 1:
+        try:
+            smark = askinteger("Mark", "Input the mark")
+            if smark == None:
+                break
+            elif smark < 0 or smark > 100:
+                raise RangeError
+            else:
+                smarks.append(smark)
+                messagebox.showinfo("Success!", "Mark has been entered")
+                
+        except ValueError:
+            messagebox.showinfo("error", "invalid input!")
+        except RangeError:
+             messagebox.showinfo("error", "invalid input!")
+    
+def see_average():
+    #openning see average window
+    if len(smarks) == 0:
+        messagebox.showinfo("Average", "There are no marks inputted yet!")
+    else:
+        sTmark = sum(smarks)
+        smarkcount = len(smarks)
+        saverage = str(round(sTmark/smarkcount))
+        info = "Your average is " + saverage
+        messagebox.showinfo("Average", info)
+        
+
+def notes():
+    #openning notes
+    note = Tk()
+    note.configure(background = "#a7daff")
+    global snote
+    snote = Text(note)
+    scroll = Scrollbar(note, command=snote.yview)
+    scroll = Scrollbar(note, command=snote.yview)
+    save = tk.Button(note, text = "Save", bg = "#ffd89f",
+                     width=30, command = savet).pack(side=BOTTOM)
+    if len(nlist) == 1:
+        snote.insert(END, nlist[0])
+    snote.pack(side=LEFT, expand=True, fill='both')
+    scroll.pack(side=RIGHT, fill=Y)
+
+def savet():
+    #saving notes
+    inputValue=snote.get("1.0","end-1c")
+    if len(nlist) == 1:
+        del nlist[0]
+    nlist.append(inputValue)
+    messagebox.showinfo("Save", "Note saved!")
+    
+def study_tools():
+    close = 1
+    #closing previous windows
+    while close == 1:
+        try:
+            studentw.destroy()
+            close = 0
+        except (NameError,TclError):
+            pass
+
+    #openning study tools window
+    global studyw
+    studyw = tk.Tk()
+    studyw.configure(background = "#a7daff")
+    goback = tk.Button(studyw, text = "Go back", bg = "#ffd89f",
+                       width=30, command = window_student)
+    goback.pack()
+    spaint = tk.Button(studyw, text = "Paint", bg = "#ffd89f",
+                       width=30, command = sdraw)
+    spaint.pack()
+    notep = tk.Button(studyw, text = "Notes", bg = "#ffd89f",
+                      width=30, command = notes)
+    notep.pack()
+        
+def window_student():
+    close = 1
+    #closing previous windows
+    while close == 1:
+        try:
+            root.destroy()
+            close = 0
+        except (NameError,TclError):
+            pass
+        try:
+            studyw.destroy()
+            close = 0
+        except (NameError,TclError):
+            break
+
+    #openning student window
+    global studentw
+    studentw = tk.Tk()
+    studentw.configure(background = "#a7daff")
+    inputmarks = tk.Button(studentw, text = "Input marks", bg = "#ffd89f",
+                           width=30, command = input_marks)
+    inputmarks.pack()
+    average = tk.Button(studentw, text = "See average", bg = "#ffd89f",
+                        width=30, command = see_average)
+    average.pack()
+    study = tk.Button(studentw, text = "Study tools", bg = "#ffd89f",
+                      width=30, command = study_tools)
+    study.pack()
+    date = tk.Button(studentw, text = "Date and Time", bg = "#ffd89f",
+                     width=30, command = date_time)
+    date.pack(side = RIGHT)
+    savebutton = tk.Button(studentw, text = "Save", bg = "#ffd89f",
+                           width=30, command = save)
+    savebutton.pack(side = LEFT)
+    
+def student_list():
+    #closing previous windows
+    close = 1
+    while close == 1:
+        try:
+            teacherw.destroy()
+            close = 0
+        except (NameError,TclError):
+            pass
+
+    #openning student list
+    global stlist
+    stlist = Tk()
+    stlist.configure(background = "#a7daff")
+    add = tk.Button(stlist, text = "Add students", bg = "#ffd89f",
+                    width=30, command = add_students)
+    add.pack()
+    remove = tk.Button(stlist, text = "Remove students", bg = "#ffd89f",
+                       width=30, command = r_students)
+    remove.pack()
+    view = tk.Button(stlist, text = "View students", bg = "#ffd89f",
+                     width=30, command = v_students)
+    view.pack()
+    back = tk.Button(stlist, text = "Go back", bg = "#ffd89f",
+                     width=30, command = window_teacher)
+    back.pack()
+
+def add_students():
+    #openning add student window
+    close = 1
+    x = 0
+    while close == 1:
+        try:
+            snum = askinteger("Add student", "Input the number you wish to add the student as \nif number was already taken, it will push down the students that come after")
+            if snum == None:
+                break
+            elif snum < 0 or snum > len(slist)+1:
+                raise RangeError
+            else:
+                x = snum - 1
+                close = 0
+                break
+                
+        except ValueError:
+            messagebox.showinfo("error", "invalid input!")
+        except RangeError:
+             messagebox.showinfo("error", "Exceeds the number of students you already have!")
+
+    
+    while close == 0:
+        sname = askstring("Add student", "Input student name")
+        if sname == None:
+            break
+        else:
+            slist.insert(x,sname)
+            break
+                
+def r_students():
+    #openning remove student window
+    close = 1
+    if len(slist) == 0:
+        messagebox.showinfo("Remove students", "No students have been added yet")
+    else:
+        while close == 1:
+            try:
+                snum = askinteger("Remove student", "Input the student's corresponding number, if not sure check 'Student list'")
+                if snum == None:
+                    break
+                elif snum < 0 or snum > len(slist):
+                    raise RangeError
+                else:
+                    x = snum - 1
+                    
+            except ValueError:
+                messagebox.showinfo("error", "invalid input!")
+                continue
+            except RangeError:
+                 messagebox.showinfo("error", "Exceeds the number of students you already have!")
+                 continue
+
+            message = slist[x] + " has beeen removed"
+            messagebox.showinfo("Removed", message)
+            del slist[x]
+
+def v_students():
+    #show list of students
+    vstudents = Tk()
+    vstudents.configure(background = "#a7daff")
+    text1 = Text(vstudents, height=30, width=50,)
+    scroll = Scrollbar(vstudents, command=text1.yview)
+    scroll = Scrollbar(vstudents, command=text1.yview)
+    if len(slist) == 0:
+        text1.insert(END, "No students have been added yet.")
+    else:
+        for count in range (1, len(slist)+1):
+            x = count - 1
+            text = str(count) + ". " + slist[x]
+            text1.insert (END,text+'\n')
+    text1.pack(side=LEFT)
+    scroll.pack(side=RIGHT, fill=Y)
+
+def input_marksT():
+    #openning input mark window for teacher
+    close = 1
+    while close == 1:
+        try:
+            tmark = askinteger("Mark", "Input the mark")
+            if tmark == None:
+                break
+            elif tmark < 0 or tmark > 100:
+                raise RangeError
+            else:
+                tmarks.append(tmark)
+                messagebox.showinfo("Success!", "Mark has been entered")
+                
+        except ValueError:
+            messagebox.showinfo("error", "invalid input!")
+        except RangeError:
+             messagebox.showinfo("error", "invalid input!")
+
+def see_averageT():
+    #openning see average for teacher
+    if len(tmarks) == 0:
+        messagebox.showinfo("Average", "There are no marks inputted yet!")
+    else:
+        tTmark = sum(tmarks)
+        tmarkcount = len(tmarks)
+        taverage = str(round(tTmark/tmarkcount))
+        info = "Your average is " + taverage
+        messagebox.showinfo("Average", info)
+    
+def window_teacher():
+    close = 1
+    #closing previous windows
+    while close == 1:
+        try:
+            root.destroy()
+            close = 0
+        except (NameError,TclError):
+            pass
+        try:
+            stlist.destroy()
+            close = 0
+        except (NameError,TclError):
+            break
+        
+    #openning teacher window
+    global teacherw
+    teacherw = tk.Tk()
+    teacherw.configure(background = "#a7daff")
+
+    studentlist = tk.Button(teacherw, text = "Edit student list", bg = "#ffd89f",
+                            width=30, command = student_list)
+    studentlist.pack()
+    inputmarks = tk.Button(teacherw, text = "Input marks", bg = "#ffd89f",
+                           width=30, command = input_marksT)
+    inputmarks.pack()
+    average = tk.Button(teacherw, text = "See average", bg = "#ffd89f",
+                        width=30, command = see_averageT)
+    average.pack()
+    date = tk.Button(teacherw, text = "Date and Time", bg = "#ffd89f",
+                     width=30, command = date_time)
+    date.pack(side = RIGHT)
+    savebutton = tk.Button(teacherw, text = "Save", bg = "#ffd89f",
+                           width=30, command = save)
+    savebutton.pack(side = LEFT)
+
+def main():
+    #main initial window
+    global root
+
+    root = Tk()
+    root.configure(background = "#a7daff")
+
+    root.title = ("Which one are you?")
+    
+    student = tk.Button(root, text ="Student", bg = "#ffd89f",
+                        width=30, command = window_student)
+    student.pack()
+    teacher = tk.Button(root, text = "Teacher", bg = "#ffd89f",
+                        width=30, command = window_teacher)
+    teacher.pack()
+    
+def save():
+    #saving all list variables
+    with open('smarksfile.data', 'wb') as filehandle:  
+        pickle.dump(smarks, filehandle)
+        
+    with open('slistfile.data', 'wb') as filehand:  
+        pickle.dump(slist, filehand)
+        
+    with open('tmarksfile.data', 'wb') as filehan:  
+        pickle.dump(tmarks, filehan)
+        
+    with open('nlistfile.data', 'wb') as file:  
+        pickle.dump(nlist, file) 
+
+    messagebox.showinfo("Save", "User info saved!")
+
+#code runs from here
+try:
+    #openning saved files (lists)
+    with open('smarksfile.data', 'rb') as filehandle:
+        smarks = pickle.load(filehandle)
+
+    with open('slistfile.data', 'rb') as filehand:  
+        slist = pickle.load(filehand)
+        
+    with open('tmarksfile.data', 'rb') as filehan:  
+        tmarks = pickle.load(filehan)
+        
+    with open('nlistfile.data', 'rb') as file:  
+        nlist = pickle.load(file)
+        
+    main()
+
+except (IOError, EOFError, FileNotFoundError):
+    #if no files are found, aka first time running program
+    smarks = []
+    slist = []
+    tmarks = []
+    nlist = []
+    
+    main()
+
+
+
+
+
+
