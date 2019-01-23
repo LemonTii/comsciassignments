@@ -1,0 +1,684 @@
+%intro
+var window : int := Window.Open ("graphics:max;max")
+var ans : string
+put "Ya like games??"
+get ans
+if ans = "yes" then
+    put "Ok let's get started"
+else
+    put "I'll take that as a yes"
+end if
+
+put "what language do u want?"
+put "English"
+put "Dutch"
+put "Spanish"
+put "French"
+get ans
+
+if ans = "english" then
+    put "perfect, let's get started"
+else
+    put "sorry.. only speak English"
+end if
+
+%questions/monster selection
+var mons := 0
+var check := 0
+
+%point adder (apply to all questions)
+procedure ques
+    check := mons
+    get ans
+    case ans of
+        label "a" :
+            mons += 1
+        label "b" :
+            mons += 2
+        label "c" :
+            mons += 3
+        label "d" :
+            mons += 4
+        label :
+            put "please type in again"
+    end case
+end ques
+
+%point adder (apply to questions with 3 answers
+procedure iiiques
+    if ans = "d" then
+        mons -= 4
+        put "please type in again"
+    end if
+end iiiques
+
+%point adder (apply to questions with 2 answers
+procedure iiques
+    if ans = "d" then
+        mons -= 4
+        put "please type in again"
+    elsif ans = "c" then
+        mons -= 4
+        put "please type in again"
+    end if
+end iiques
+%survey
+put "Before we start you need to take our survey... type in the corresponding alphabet to answer."
+loop
+    put " "
+    put "A creepy guy is bothering a girl on a busy street. WYD?"
+    put "a. Help her, no hesitation"
+    put "b. Help her, even if scared"
+    put "c. Call the popo"
+    put "d. Ignore"
+    ques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "An immigrant wants to talk to you, but you can't understand what he/she/non-gender binary is saying. How would you reply?"
+        put "a. Laugh"
+        put "b. Ask to repeat"
+        put "c. Kindly excuse yourself from the situation"
+        ques
+        exit when mons > check
+    end loop
+    iiiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "A friend brings you an item that you lost. How do you thank him/her/non-gender binary?"
+        put "a. Sincerely"
+        put "b. With a joke"
+        put "c. Passively"
+        ques
+        exit when mons > check
+    end loop
+    iiiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Person's hand comes out of a toilet how do you react?"
+        put "a. Scream"
+        put "b. Close the lid"
+        put "c. Shake hands with it"
+        ques
+        exit when mons > check
+    end loop
+    iiiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "A test is coming up. How do you study?"
+        put "a. Hardcorely"
+        put "b. Leave it till the last minute"
+        put "c. Don't"
+        ques
+        exit when mons > check
+    end loop
+    iiiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Would you like to try a lot of things?"
+        put "a. Yes"
+        put "b. No"
+        ques
+        exit when mons > check
+    end loop
+    iiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Are you cheerful?"
+        put "a. Yes"
+        put "b. No"
+        ques
+        exit when mons > check
+    end loop
+    iiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Are you late a lot?"
+        put "a. Yes"
+        put "b. No"
+        ques
+        exit when mons > check
+    end loop
+    iiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Can you focus?"
+        put "a. Yes"
+        put "b. No"
+        ques
+        exit when mons > check
+    end loop
+    iiques
+    exit when mons > check
+end loop
+
+loop
+    loop
+        put " "
+        put "Would you enter a haunted house?"
+        put "a. Yes"
+        put "b. No"
+        put "c. With a girlfriend/boyfried/friend"
+        ques
+        exit when mons > check
+    end loop
+    iiiques
+    exit when mons > check
+end loop
+
+put "Do you like pranks?"
+put "a. Yes"
+put "b. No"
+get ans
+put "Ha.. Pranked!"
+put "Yes or No?"
+loop
+    get ans
+    check := mons
+    if ans = "yes" then
+        mons += 1
+    elsif ans = "no" then
+        mons += 2
+    else
+        put "Please type again"
+    end if
+    exit when mons > check
+end loop
+delay (500)
+
+%Calculations for Monster/showing the monster
+var hp, hpr, str, dfc, ev : int
+var hp1, str1, dfc1, ev1 : int
+var miss, move, hpcheck : int
+var atk := 10
+var st := 5
+var smons : int
+
+if mons >= 11 and mons <= 16 then
+    hp := 1000
+    hpr := 1000
+    str := 20
+    dfc := 20
+    ev := 10
+    smons := 1
+    put "Here is the elemental monster that you will fight with!!"
+    delay (500)
+    put "Wenguin!"
+    delay (1000)
+    cls
+    View.Set ("graphics,offscreenonly")
+    drawfilloval (300, 300, 30, 30, blue)
+    View.Update
+    delay (1000)
+    View.Set ("graphics,nooffscreenonly")
+    cls
+elsif mons >= 17 and mons <= 22 then
+    hp := 800
+    hpr := 800
+    str := 30
+    dfc := 10
+    ev := 50
+    smons := 2
+    put "Here is the elemental monster that you will fight with!!"
+    delay (500)
+    put "1000 Degree Monkey!"
+    delay (1000)
+    cls
+    View.Set ("graphics,offscreenonly")
+    drawfilloval (300, 300, 30, 30, red)
+    View.Update
+    delay (1000)
+    View.Set ("graphics,nooffscreenonly")
+    cls
+elsif mons >= 23 and mons <= 28 then
+    hp := 1200
+    hpr := 1200
+    str := 30
+    dfc := 30
+    ev := 0
+    smons := 3
+    put "Here is the elemental monster that you will fight with!!"
+    delay (500)
+    put "Woodrenklin!"
+    delay (1000)
+    cls
+    View.Set ("graphics,offscreenonly")
+    drawfilloval (300, 300, 30, 30, green)
+    View.Update
+    delay (1000)
+    View.Set ("graphics,nooffscreenonly")
+    cls
+elsif mons = 29 then
+    hp := 10000
+    hpr := 10000
+    str := 1000000
+    dfc := 0
+    ev := 90
+    smons := 4
+    put "This isn't an elemental monster...."
+    delay (500)
+    put "You unlocked an easter egg!!"
+    delay (500)
+    put "It's ONE PUNCHHHHH!!!!!"
+    delay (1000)
+    cls
+    View.Set ("graphics,offscreenonly")
+    drawfilloval (300, 300, 30, 30, 42)
+    View.Update
+    delay (1000)
+    View.Set ("graphics,nooffscreenonly")
+    cls
+end if
+delay (700)
+cls
+%battle stuff (procedures)
+
+var ch : string (1)
+procedure getKey
+    getch (ch)
+end getKey
+
+procedure battle
+    put "what will u do? (a to attack and s for stat boost)", " your hp" : 5, hp : 5, "  oponent's " : 5, hp1 : 5
+    loop
+        getKey
+        if ch = "a" then
+            put "You attacked!"
+            delay (1000)
+            randint (miss, ev1, 90)
+            if miss = 90 then
+                put "You missed.."
+                delay (1000)
+                exit
+            else
+                for x : 130 .. 490
+                    View.Set ("graphics,offscreenonly")
+                    drawfilloval (x, 100, 20, 20, 20)
+                    View.Update
+                    delay (1)
+                end for
+                hpcheck := hp1
+                hp1 := hp1 - 10 * (str + atk - dfc1)
+                View.Set ("graphics,nooffscreenonly")
+                cls
+
+                if dfc1 > (str + atk) then
+                    put "Opponent is too strong!! it did no damage!!"
+                    delay (1000)
+                    hp1 := hpcheck
+                elsif hp1 < 0 then
+                    hp1 := 0
+                end if
+                exit
+            end if
+        elsif ch = "s" then
+            if smons = 1 then
+                put "You boosted your stat!!"
+                delay (1000)
+                str := str + 5
+                exit
+            elsif smons = 2 then
+                put "You boosted your stat!!"
+                delay (1000)
+                ev := ev + 5
+                exit
+            elsif smons = 3 then
+                put "You boosted your stat!!"
+                delay (1000)
+                dfc := dfc + 5
+                exit
+            elsif smons = 4 then
+                put "Invalid move for this character.. must attack!"
+                delay (1000)
+            end if
+        else
+            put "Not a valid move!"
+            delay (1000)
+        end if
+    end loop
+end battle
+
+var op : int
+%for oponents turn
+procedure opturn
+    if op = 1 then
+        put "Opponent attacked!"
+        delay (1000)
+        randint (miss, ev, 90)
+        if miss = 90 then
+            put "But it missed.."
+            delay (1000)
+        else
+            for decreasing x : 490 .. 130
+                View.Set ("graphics,offscreenonly")
+                drawfilloval (x, 100, 20, 20, 20)
+                View.Update
+                delay (1)
+            end for
+            View.Set ("graphics,nooffscreenonly")
+            cls
+            hpcheck := hp
+            hp := hp - 10 * (str1 + atk - dfc)
+
+            if dfc > (str1 + atk) then
+                put "But it did no damage.."
+                delay (1000)
+                hp := hpcheck
+            elsif hp < 0 then
+                hp := 0
+            end if
+        end if
+    end if
+
+    if op = 2 or op = 4 then
+        randint (move, 1, 2)
+        if move = 1 then
+            put "Opponent attacked!"
+            delay(1000)
+            randint (miss, ev, 90)
+            if miss = 90 then
+                put "But it missed..."
+                delay (1000)
+            else
+                for decreasing x : 490 .. 130
+                    View.Set ("graphics,offscreenonly")
+                    drawfilloval (x, 100, 20, 20, 20)
+                    View.Update
+                    delay (1)
+                end for
+                View.Set ("graphics,nooffscreenonly")
+                cls
+                hpcheck := hp
+                hp := hp - 10 * (str1 + atk - dfc)
+                if dfc > (str1 + atk) then
+                    put "But it did no damage.."
+                    delay (1000)
+                    hp := hpcheck
+                elsif hp < 0 then
+                    hp := 0
+                end if
+            end if
+        else
+            put "Opponent boosted its stats!"
+            delay (1000)
+            str1 := str1 + 5
+        end if
+    end if
+
+    if op = 3 then
+        put "Opponent boosted its stats!"
+        delay (1000)
+        ev1 := ev1 + 5
+    end if
+end opturn
+%for the background graphics
+procedure graphics1
+    cls
+    drawfill (20, 20, 90, 90)
+    if smons = 1 then
+        drawfilloval (70, 100, 50, 50, blue)
+    elsif smons = 2 then
+        drawfilloval (70, 100, 50, 50, red)
+    elsif smons = 3 then
+        drawfilloval (70, 100, 50, 50, brown)
+    else
+        drawfilloval (70, 100, 50, 50, 42)
+    end if
+    if op = 4 then
+        drawfilloval (550, 100, 50, 50, grey)
+    elsif op = 3 then
+        drawfilloval (550, 100, 50, 50, yellow)
+    else
+        drawfilloval (550, 100, 50, 50, 60)
+    end if
+end graphics1
+%flicker animation
+setscreen ("graphics")
+
+
+procedure flicker
+    var c : int := 16
+    var colourcount := 1
+    for bigmac : 1 .. 165
+        drawfill (1, 1, c, c)
+        delay (10)
+        c += colourcount
+        if c = 31 then
+            colourcount *= -1
+        end if
+        if c = 16 then
+            colourcount *= -1
+        end if
+    end for
+end flicker
+
+
+%game start
+put "Random Monster: Hello.. thank goodness someone came by! my friend is stuck at the end of this tunnel.. could you rescue him?"
+delay (1000)
+put "**You agreed and decided to help**"
+delay (1000)
+put "Random Monster: Thank you so much!! He.. hehehe.... good luck!!"
+delay (1000)
+View.Set ("graphics,offscreenonly")
+
+if smons = 1 then
+    for y : 100 .. 300
+        drawfill (20, 20, 2, 2)
+        drawfillbox (260, 350, 370, 400, black)
+        drawfilloval (250, 300, 30, 30, grey)
+        drawfilloval (315, y, 30, 30, blue)
+        View.Update
+        delay (3)
+        cls
+    end for
+elsif smons = 2 then
+    for y : 100 .. 300
+        drawfill (20, 20, 2, 2)
+        drawfillbox (260, 350, 370, 400, black)
+        drawfilloval (250, 300, 30, 30, grey)
+        drawfilloval (315, y, 30, 30, red)
+        View.Update
+        delay (3)
+        cls
+    end for
+elsif smons = 3 then
+    for y : 100 .. 300
+        drawfill (20, 20, 2, 2)
+        drawfillbox (260, 350, 370, 400, black)
+        drawfilloval (250, 300, 30, 30, grey)
+        drawfilloval (315, y, 30, 30, brown)
+        View.Update
+        delay (3)
+        cls
+    end for
+else
+    for y : 100 .. 300
+        drawfill (20, 20, 2, 2)
+        drawfillbox (260, 350, 370, 400, black)
+        drawfilloval (250, 300, 30, 30, grey)
+        drawfilloval (315, y, 30, 30, 42)
+        View.Update
+        delay (3)
+        cls
+    end for
+end if
+View.Set ("graphics,nooffscreenonly")
+cls
+put "Small rat: You shall not pass!"
+delay (1000)
+put "You: ..."
+delay (1000)
+put "Oh really? then you must battle me!"
+delay (1000)
+cls
+flicker
+%battle 1
+hp1 := 600
+str1 := 20
+dfc1 := 10
+ev1 := 5
+
+loop
+    op := 1
+
+    graphics1
+    battle
+    exit when hp1 = 0
+    graphics1
+    opturn
+    exit when hp = 0
+    graphics1
+    delay (1000)
+end loop
+if hp > 0 then
+    put "Congratulations you won against the small rat!"
+    delay (2000)
+    %battle 2
+    hp := hpr
+    hp1 := 1300
+    str1 := 30
+    dfc1 := 30
+    ev1 := 10
+    cls
+    put "Big rat: Hey why are you in my cave?!"
+    delay (1000)
+    put "Your gonna pay for tresspassing."
+    delay (1000)
+    put "You: ..."
+    delay (1000)
+    put "Big rat: Fight me boi"
+    delay (1000)
+    flicker
+    loop
+        op := 2
+        graphics1
+        battle
+        exit when hp1 = 0
+        graphics1
+        opturn
+        exit when hp = 0
+        graphics1
+        delay (1000)
+    end loop
+    if hp > 0 then
+        put "Congratulations you won against the big rat!"
+        delay (2000)
+        %battle 3
+        hp := hpr
+        hp1 := 1500
+        str1 := 20
+        dfc1 := 10
+        ev1 := 60
+        cls
+        put "Shocking mouse: You chose the wrong cave buddy"
+        delay (1000)
+        put "You: ... "
+        delay (1000)
+        put "Shocking mouse: square up bruv!"
+        flicker
+        loop
+            op := 3
+            graphics1
+            battle
+            exit when hp1 = 0
+            graphics1
+
+            opturn
+            exit when ev1 = 90
+            exit when hp = 0
+            graphics1
+            delay (1000)
+        end loop
+        if hp1 = 0 then
+            put "Congratulations you won against the shocking mouse!"
+            delay (2000)
+            %battle 4
+            hp := hpr
+            hp1 := 2200
+            str1 := 100
+            dfc1 := 35
+            ev1 := 70
+            cls
+            put "You: ...?"
+            delay (1000)
+            put "The mighty horse: That's right buddy."
+            delay (1000)
+            put "You: ...?!"
+            delay (1000)
+            put "The mighty horse: Ha, you just got pranked, fool! Now I'll destroy you!"
+            delay (1000)
+            flicker
+            loop
+                op := 4
+
+                graphics1
+                battle
+                exit when hp1 = 0
+                graphics1
+                opturn
+                exit when hp = 0
+                graphics1
+                delay (1000)
+            end loop
+            if hp1 = 0 then
+                put "Congratulations you won against the mighty horse!"
+                delay (2000)
+            elsif hp = 0 then
+                put "You lose!!"
+                delay (2000)
+                Window.Close (window)
+            end if
+        elsif hp = 0 or ev1 = 90 then
+            put "You lose!!"
+            delay (2000)
+            Window.Close (window)
+        end if
+    elsif hp = 0 then
+        put "You lose!!"
+        delay (2000)
+        Window.Close (window)
+    end if
+elsif hp = 0 then
+    put "You lose!!"
+    delay (2000)
+    Window.Close (window)
+end if
+if hp = 0 then
+    put " "
+else
+    put "You won the game"
+
+end if
+
